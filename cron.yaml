@@ -1,0 +1,4 @@
+cron:
+- description: sync stock price data
+  url: /api/stock_tracker/update
+  schedule: every 1 hours
