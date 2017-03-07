@@ -1,0 +1,13 @@
+[Unit]
+Description=Celery tasks
+After=network.target
+
+[Service]
+Type=forking
+User=appadmin
+Group=celery
+WorkingDirectory=/home/appadmin/macd-monitor
+ExecStart=/usr/local/bin/celery multi start -E --loglevel=INFO --concurrency=1 --workdir=/home/appadmin/macd-monitor/
+
+[Install]
+WantedBy=multi-user.target
