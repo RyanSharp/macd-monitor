@@ -1,9 +1,0 @@
-queue:
-- name: historical_sync
-  rate: 500/s
-  max_concurrent_requests: 1
-  bucket_size: 500
-- name: latest_data
-  rate: 500/s
-  max_concurrent_requests: 3
-  bucket_size: 500

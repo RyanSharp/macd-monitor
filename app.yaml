@@ -1,9 +1,0 @@
-runtime: python27
-application: market-tracker
-version: 1
-api_version: 1
-threadsafe: true
-
-handlers:
-- url: /api/.*
-  script: api.app
