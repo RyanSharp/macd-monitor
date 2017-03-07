@@ -46,7 +46,7 @@ class DailyUpdate(BaseClass):
 
 
 class HoldingProfile(BaseClass):
-    def __init__(self, data=None):
+    def __init__(self, data):
         BaseClass.__init__(self, data)
         self.properties = [
             Attribute("ticker", [str, unicode], required=True, val=data.get("ticker")),

@@ -32,6 +32,7 @@ def create_stock_profile(ticker):
             profile = HoldingProfile(dict(ticker=ticker))
             for price in historical_data:
                 profile.update_profile(price[0], int(price[1].strftime("%Y%m%d")))
+            profile.commit()
             return profile
         else:
             raise EntityAlreadyExists("Profile already exists for ticker")

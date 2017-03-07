@@ -1,5 +1,5 @@
 from flask import Flask, request, Response
-from utils.account import get_account_by_username
+from utils.account import get_account_by_username, create_account
 from utils.stock_profile import create_stock_profile
 from utils.errors import EntityAlreadyExists, QuoteNotFound
 from utils.decorators import login_required
@@ -14,6 +14,17 @@ app = Flask(__name__)
 @app.route("/test")
 def test():
     return "Hello World"
+
+
+@app.route("/create_superuser")
+def create_superuser():
+    username = "rtsharp"
+    password = "thisispassword"
+    try:
+        create_account(username, password)
+        return "Done"
+    except Exception as e:
+        return "{0}".format(e.message)
 
 
 @app.route("/api/login", methods=["GET", "POST"])
