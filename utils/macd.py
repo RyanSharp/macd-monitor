@@ -1,10 +1,10 @@
 '''
 Calculate MACD and EMAs
 '''
+from config.logs import logging
 import datetime
 import json
-import httplib2
-import logging
+import urllib2
 
 
 _CLOSE_INDEX = 4
@@ -16,7 +16,7 @@ def calculate_ema(curr_val, prev_ema, ema_length):
     '''
     Calculates today's EMA value based on previous EMA and current value
     '''
-    k = 2 / (ema_length + 1)
+    k = float(2) / (ema_length + 1)
     return (curr_val * k) + (prev_ema * (1 - k))
 
 
@@ -28,14 +28,14 @@ def get_seed_data_for_ticker(ticker):
     url = ("http://chart.finance.yahoo.com/table.csv?"
            "s={0}&a=1&b=1&c=2016&d={1}&e={2}&f={3}&g=d&ignore=.csv")\
           .format(ticker, today.day, today.month, today.year)
-    http = httplib2.Http()
-    _, content = http.request(url, method="GET")
-    rows = reversed(content.split("\n")[1:])
+    content = urllib2.urlopen(url).read()
+    rows = reversed(content.split("\n")[1:-1])
     closing_prices = []
     for row in rows:
         data = row.split(",")
         closing_prices.append(
-            [data[_CLOSE_INDEX], datetime.datetime.strptime(data[_DATE_INDEX], _DATE_FORMAT)])
+            [float(data[_CLOSE_INDEX]),
+             datetime.datetime.strptime(data[_DATE_INDEX], _DATE_FORMAT)])
     return closing_prices
 
 
@@ -47,8 +47,7 @@ def get_quote_for_ticker(ticker):
            "formatted=true&lang=en-US&region=US&"
            "modules=defaultKeyStatistics%2CfinancialData%2CcalendarEvents&"
            "corsDomain=finance.yahoo.com").format(ticker)
-    http = httplib2.Http()
-    _, content = http.request(url, method="GET")
+    content = urllib2.urlopen(url).read()
     content = json.loads(content)
     if "quoteSummary" in content and "result" in content["quoteSummary"]\
             and content["quoteSummary"]["result"] is not None:
@@ -70,7 +69,7 @@ def parse_yahoo_finance_quote(data):
         factor = int(factor[0]) / float(factor[1])
         split_data = {
             "ratio": factor,
-            "date": datetime.datetime.strftime(
+            "date": datetime.datetime.strptime(
                 key_stats.get("lastSplitDate")["fmt"], _DATE_FORMAT)
         }
     return {"price": current_price, "latest_split": split_data}
