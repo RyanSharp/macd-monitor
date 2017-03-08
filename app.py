@@ -3,8 +3,7 @@ from utils.account import get_account_by_username, create_account
 from utils.stock_profile import create_stock_profile
 from utils.errors import EntityAlreadyExists, QuoteNotFound
 from utils.decorators import login_required
-import httplib2
-import logging
+from config.logs import logging
 import json
 
 
