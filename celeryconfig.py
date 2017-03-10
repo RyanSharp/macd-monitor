@@ -33,6 +33,6 @@ CELERY_ROUTES = {
 CELERYBEAT_SCHEDULE = {
     "stock-matrix-update": {
         "task": "utils.tasks.queue_stock_matrix_update",
-        "schedule": crontab(minute="*/60")
+        "schedule": crontab(minute="*/10")
     }
 }

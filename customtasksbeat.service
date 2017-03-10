@@ -7,7 +7,8 @@ Type=forking
 User=appadmin
 Group=www-data
 WorkingDirectory=/home/appadmin/macd-monitor
-ExecStart=/usr/local/bin/celery multi start --beat --loglevel=INFO --workdir=/home/appadmin/macd-monitor/
+ExecStart=/bin/sh -c '/usr/local/bin/celery beat -A customtasks --loglevel=INFO --workdir=/home/appadmin/macd-monitor --pidfile=/var/run/celery/beat.pid'
+ExecStop=/bin/systemctl kill customtasksbeat.service
 
 [Install]
 WantedBy=multi-user.target

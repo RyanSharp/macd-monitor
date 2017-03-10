@@ -4,6 +4,7 @@ from utils.macd import get_quote_for_ticker, get_seed_data_for_ticker
 from config.database import HOLDING_PROFILES_COLLECTION
 from utils.errors import EntityAlreadyExists, QuoteNotFound
 from utils.schedule import should_sync_run
+from config.logs import logging
 import datetime
 
 
@@ -45,9 +46,13 @@ def update_stock_profile(ticker):
     Updates stock profile based on latest data from Yahoo finance
     '''
     if not should_sync_run():
-        return
+        logging.info("Schedule does not allow update")
+        return False
     quote = get_quote_for_ticker(ticker)
     profile = get_stock_profile(ticker)
     if quote is None or profile is None:
-        return
+        logging.info("Missing quote or profile")
+        return False
     profile.update_profile(quote["price"], int(datetime.datetime.now().strftime("%Y%m%d")))
+    profile.commit()
+    return True
