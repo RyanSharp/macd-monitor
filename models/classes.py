@@ -36,7 +36,7 @@ class DailyUpdate(BaseClass):
             Attribute("price", [float], required=True, val=data.get("price")),
             Attribute("ema26", [float], required=True, val=data.get("ema26")),
             Attribute("ema12", [float], required=True, val=data.get("ema12")),
-            Attribute("macd_ema9", [float], required=True, val=data.get("macd_ema9")),
+            Attribute("macd_ema9", [float], required=False, val=data.get("macd_ema9")),
         ]
 
     def _get_properties(self):

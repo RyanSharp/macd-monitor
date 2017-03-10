@@ -66,8 +66,12 @@ class Attribute(object):
         else:
             if operation == "$inc":
                 self.value += value
+            if operation == "$mul":
+                self.value *= value
             if operation == "$set":
                 self.value = value
+        if hasattr(value, "serialize_data"):
+            value = value.serialize_data()
         self.transactions.append({operation: {self.get_name(): value}})
 
 
