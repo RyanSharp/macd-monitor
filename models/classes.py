@@ -1,7 +1,6 @@
 from models.base import Attribute, BaseClass
-from utils.macd import calculate_ema
+from utils.macd import calculate_ema, calculate_health_factor
 from config.database import ACCOUNT_COLLECTION, HOLDING_PROFILES_COLLECTION, ARCHIVED_UPDATES_COLLECTION
-from config.logs import logging
 import hashlib
 
 
@@ -28,6 +27,27 @@ class Account(BaseClass):
         return password == self.get_property("hashed_pw")
 
 
+class ArchivedUpdate(BaseClass):
+    def __init__(self, data):
+        BaseClass.__init__(self, data)
+        self.properties = [
+            Attribute("ticker", [str, unicode], required=True, val=data.get("ticker")),
+            Attribute("date", [int], required=True, val=data.get("date")),
+            Attribute("price", [float], required=True, val=data.get("price")),
+            Attribute("ema26", [float], required=True, val=data.get("ema26")),
+            Attribute("ema12", [float], required=True, val=data.get("ema12")),
+            Attribute("macd_ema9", [float], required=False, val=data.get("macd_ema9")),
+            Attribute("health_factor", [dict], required=False, val=data.get("health_factor")),
+        ]
+        self.collection = ARCHIVED_UPDATES_COLLECTION
+
+    def _get_properties(self):
+        return self.properties
+
+    def _get_collection(self):
+        return self.collection
+
+
 class DailyUpdate(BaseClass):
     def __init__(self, data):
         BaseClass.__init__(self, data)
@@ -36,7 +56,7 @@ class DailyUpdate(BaseClass):
             Attribute("price", [float], required=True, val=data.get("price")),
             Attribute("ema26", [float], required=True, val=data.get("ema26")),
             Attribute("ema12", [float], required=True, val=data.get("ema12")),
-            Attribute("macd_ema9", [float], required=False, val=data.get("macd_ema9")),
+            Attribute("macd_ema9", [float], required=True, val=data.get("macd_ema9")),
         ]
 
     def _get_properties(self):
@@ -53,6 +73,7 @@ class HoldingProfile(BaseClass):
             Attribute("ticker", [str, unicode], required=True, val=data.get("ticker")),
             Attribute("recent_data", [DailyUpdate], islist=True, val=data.get("recent_data", [])),
             Attribute("total_data", [int], required=True, val=data.get("total_data", 0)),
+            Attribute("last_split", [int], required=False, val=data.get("last_split")),
         ]
         self.collection = HOLDING_PROFILES_COLLECTION
 
@@ -67,7 +88,6 @@ class HoldingProfile(BaseClass):
         recent_data = attribute.get_val()
         overwrite_latest = False
         if recent_data and len(recent_data) > 0:
-            logging.info(recent_data)
             last_update = recent_data[-1]
             if last_update.get_property("date").get_val() == for_date:
                 overwrite_latest = True
@@ -99,3 +119,12 @@ class HoldingProfile(BaseClass):
                                       macd_ema9=None))
             attribute.apply_transaction("$push", value=update)
         self.get_property("total_data").apply_transaction("$inc", value=1)
+        update_data = update.serialize_data()
+        update_data["ticker"] = self.get_property("ticker").get_val()
+        if self.get_property("total_data").get_val() > 110:
+            update_data["health_factor"] =\
+                calculate_health_factor(
+                    [x.get_property("macd_ema9").get_val() for x in
+                     self.get_property("recent_data").get_val()[-11:]])
+        archived_update = ArchivedUpdate(update_data)
+        archived_update.commit()
