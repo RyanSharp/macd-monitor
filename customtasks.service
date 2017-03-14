@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=forking
 User=appadmin
-Group=celery
+Group=www-data
 WorkingDirectory=/home/appadmin/macd-monitor
 ExecStart=/usr/local/bin/celery multi start -E --loglevel=INFO --concurrency=1 --workdir=/home/appadmin/macd-monitor/
 

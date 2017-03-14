@@ -1,3 +1,4 @@
+from models.database import get_collection
 import datetime
 import abc
 
@@ -41,7 +42,7 @@ class Attribute(object):
     def serialize(self):
         def run_serialize(curr_val):
             if issubclass(self.allowed_types[0], BaseClass):
-                return curr_val.serialize_data
+                return curr_val.serialize_data()
             else:
                 return curr_val
         val = self.value
@@ -67,7 +68,7 @@ class Attribute(object):
                 self.value += value
             if operation == "$set":
                 self.value = value
-        self.transactions.append({operation: {self.name: value}})
+        self.transactions.append({operation: {self.get_name(): value}})
 
 
 class BaseClass(object):
@@ -112,5 +113,23 @@ class BaseClass(object):
             attribute = self._get_properties()[self.get_named_list().index(prop_name)]
             attribute.update_val(new_val)
 
-    def commit_changes(self):
+    def commit(self):
         serialized = self.serialize_data()
+        collection = get_collection(self._get_collection())
+        if self._id:
+            while True:
+                update = {}
+                for attribute in self._get_properties():
+                    try:
+                        transaction = attribute.transactions.pop(0)
+                        key = transaction.keys()[0]
+                        if key not in update:
+                            update[key] = {}
+                        update[key][attribute.get_name()] = transaction[key][attribute.get_name()]
+                    except IndexError:
+                        pass
+                if not update:
+                    break
+                collection.update({"_id": self._id}, update)
+        else:
+            collection.insert_one(serialized)

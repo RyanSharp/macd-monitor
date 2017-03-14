@@ -34,3 +34,4 @@ def create_account(username, password):
                            salt=salt,
                            hashed_pw=password,
                            session=session))
+    account.commit()

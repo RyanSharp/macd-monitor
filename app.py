@@ -1,5 +1,5 @@
 from flask import Flask, request, Response
-from utils.account import get_account_by_username
+from utils.account import get_account_by_username, create_account
 from utils.stock_profile import create_stock_profile
 from utils.errors import EntityAlreadyExists, QuoteNotFound
 <<<<<<< HEAD
@@ -22,7 +22,21 @@ def test():
     return "Hello World"
 
 
+<<<<<<< HEAD
 >>>>>>> 7444f1b... bad merge
+=======
+@app.route("/create_superuser")
+def create_superuser():
+    username = "rtsharp"
+    password = "thisispassword"
+    try:
+        create_account(username, password)
+        return "Done"
+    except Exception as e:
+        return "{0}".format(e.message)
+
+
+>>>>>>> f0023b0... adding ability to commit models to mongo db
 @app.route("/api/login", methods=["GET", "POST"])
 def user_login():
     if request.METHOD == "POST":
