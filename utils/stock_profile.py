@@ -56,3 +56,13 @@ def update_stock_profile(ticker):
     profile.update_profile(quote["price"], int(datetime.datetime.now().strftime("%Y%m%d")))
     profile.commit()
     return True
+
+
+def list_stock_profiles():
+    '''
+    Returns a generator for surface stock profile data
+    '''
+    collection = get_collection(HOLDING_PROFILES_COLLECTION)
+    profiles = collection.find({}, {"ticker": 1})
+    for profile in profiles:
+        yield profile
