@@ -2,26 +2,11 @@ from flask import Flask, request, Response
 from utils.account import get_account_by_username, create_account
 from utils.stock_profile import create_stock_profile, list_stock_profiles, get_stock_profile
 from utils.errors import EntityAlreadyExists, QuoteNotFound
-<<<<<<< HEAD
-from utils import decorators
-=======
 from utils.decorators import login_required
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 7444f1b... bad merge
-import httplib2
-import logging
-=======
 from config.logs import logging
->>>>>>> 54bbbf2... fixing bugs.  data sync now runs
-=======
-from config.logs import logging
->>>>>>> 062cec1... fixing bugs.  data sync now runs
 import json
 
 
-<<<<<<< HEAD
-=======
 app = Flask(__name__)
 
 
@@ -30,9 +15,6 @@ def test():
     return "Hello World"
 
 
-<<<<<<< HEAD
->>>>>>> 7444f1b... bad merge
-=======
 @app.route("/create_superuser")
 def create_superuser():
     username = "rtsharp"
@@ -44,7 +26,6 @@ def create_superuser():
         return "{0}".format(e.message)
 
 
->>>>>>> f0023b0... adding ability to commit models to mongo db
 @app.route("/api/login", methods=["GET", "POST"])
 def user_login():
     if request.METHOD == "POST":
@@ -70,11 +51,6 @@ def user_login():
 
 
 @app.route("/api/stock_tracker/new/<ticker>")
-<<<<<<< HEAD
-@decorators.login_required
-=======
-@login_required()
->>>>>>> 7444f1b... bad merge
 def start_tracking_ticker(ticker):
     rdict = {"success": False}
     try:
@@ -87,14 +63,6 @@ def start_tracking_ticker(ticker):
     return json.dumps(rdict)
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-app = Flask(__name__)
-
-
-=======
->>>>>>> 7444f1b... bad merge
-=======
 @app.route("/api/stock_tracker/list_tickers")
 #@login_required()
 def list_tracking_tickers():
@@ -119,6 +87,5 @@ def get_profile_by_ticker(ticker):
     return json.dumps(rdict)
 
 
->>>>>>> b0317e2... minor fixes
 if __name__ == "__main__":
     app.run()
