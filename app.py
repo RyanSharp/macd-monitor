@@ -2,12 +2,27 @@ from flask import Flask, request, Response
 from utils.account import get_account_by_username
 from utils.stock_profile import create_stock_profile
 from utils.errors import EntityAlreadyExists, QuoteNotFound
+<<<<<<< HEAD
 from utils import decorators
+=======
+from utils.decorators import login_required
+>>>>>>> 7444f1b... bad merge
 import httplib2
 import logging
 import json
 
 
+<<<<<<< HEAD
+=======
+app = Flask(__name__)
+
+
+@app.route("/test")
+def test():
+    return "Hello World"
+
+
+>>>>>>> 7444f1b... bad merge
 @app.route("/api/login", methods=["GET", "POST"])
 def user_login():
     if request.METHOD == "POST":
@@ -33,7 +48,11 @@ def user_login():
 
 
 @app.route("/api/stock_tracker/new/<ticker>")
+<<<<<<< HEAD
 @decorators.login_required
+=======
+@login_required()
+>>>>>>> 7444f1b... bad merge
 def start_tracking_ticker(ticker):
     rdict = {"success": False}
     try:
@@ -46,8 +65,11 @@ def start_tracking_ticker(ticker):
     return json.dumps(rdict)
 
 
+<<<<<<< HEAD
 app = Flask(__name__)
 
 
+=======
+>>>>>>> 7444f1b... bad merge
 if __name__ == "__main__":
     app.run()
