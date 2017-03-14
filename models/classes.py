@@ -1,6 +1,7 @@
 from models.base import Attribute, BaseClass
 from utils.macd import calculate_ema
 from config.database import ACCOUNT_COLLECTION, HOLDING_PROFILES_COLLECTION, ARCHIVED_UPDATES_COLLECTION
+from config.logs import logging
 import hashlib
 
 
@@ -66,20 +67,22 @@ class HoldingProfile(BaseClass):
         recent_data = attribute.get_val()
         overwrite_latest = False
         if recent_data and len(recent_data) > 0:
+            logging.info(recent_data)
             last_update = recent_data[-1]
-            if last_update.get_property("date") == for_date:
+            if last_update.get_property("date").get_val() == for_date:
                 overwrite_latest = True
                 last_update = recent_data[-2]
-            update_data = dict(date=for_date,
-                               price=price,
-                               ema26=calculate_ema(price, last_update.get_property("ema26"), 26),
-                               ema12=calculate_ema(price, last_update.get_property("ema12"), 12))
-            if last_update.get_property("macd_ema9") is None:
+            update_data = dict(
+                date=for_date,
+                price=price,
+                ema26=calculate_ema(price, last_update.get_property("ema26").get_val(), 26),
+                ema12=calculate_ema(price, last_update.get_property("ema12").get_val(), 12))
+            if last_update.get_property("macd_ema9").get_val() is None:
                 update_data["macd_ema9"] = update_data["ema12"] - update_data["ema26"]
             else:
                 update_data["macd_ema9"] =\
                     calculate_ema(update_data["ema12"] - update_data["ema26"],
-                                  last_update.get_property("macd_ema9"), 9)
+                                  last_update.get_property("macd_ema9").get_val(), 9)
             update = DailyUpdate(update_data)
             if overwrite_latest:
                 attribute.apply_transaction("$pop", value=1)
