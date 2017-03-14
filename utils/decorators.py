@@ -3,8 +3,8 @@ import json
 
 def login_required():
     def wrapper(f):
-        def decorator(*args, **kwargs):
+        def func2_wrap(*args, **kwargs):
             rdict = f(*args, **kwargs)
             return json.dumps(rdict)
-        return decorator
+        return func2_wrap
     return wrapper

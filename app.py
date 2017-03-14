@@ -1,6 +1,6 @@
 from flask import Flask, request, Response
 from utils.account import get_account_by_username, create_account
-from utils.stock_profile import create_stock_profile
+from utils.stock_profile import create_stock_profile, list_stock_profiles, get_stock_profile
 from utils.errors import EntityAlreadyExists, QuoteNotFound
 <<<<<<< HEAD
 from utils import decorators
@@ -88,10 +88,37 @@ def start_tracking_ticker(ticker):
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 app = Flask(__name__)
 
 
 =======
 >>>>>>> 7444f1b... bad merge
+=======
+@app.route("/api/stock_tracker/list_tickers")
+#@login_required()
+def list_tracking_tickers():
+    rdict = {"success": False}
+    profiles = list_stock_profiles()
+    rdict["results"] = [profile for profile in profiles]
+    rdict["success"] = True
+    return json.dumps(rdict)
+
+
+@app.route("/api/stock_tracker/<ticker>")
+#@login_required()
+def get_profile_by_ticker(ticker):
+    rdict = {"success": False}
+    profile = get_stock_profile(ticker)
+    if profile is not None:
+        profile = profile.serialize()
+        rdict["success"] = True
+        rdict["results"] = [profile]
+    else:
+        rdict["msg"] = "Ticker not being tracked"
+    return json.dumps(rdict)
+
+
+>>>>>>> b0317e2... minor fixes
 if __name__ == "__main__":
     app.run()

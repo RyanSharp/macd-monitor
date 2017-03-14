@@ -25,9 +25,15 @@ def get_seed_data_for_ticker(ticker):
     Gets historical data for a quote
     '''
     today = datetime.datetime.now()
+    quote = get_quote_for_ticker(ticker)
+    cutoff = datetime.datetime.strptime("2016-01-01", _DATE_FORMAT)
+    if quote["latest_split"]["date"] is not None:
+        if quote["latest_split"]["date"] > cutoff:
+            cutoff = quote["latest_split"]["date"]
     url = ("http://chart.finance.yahoo.com/table.csv?"
-           "s={0}&a=1&b=1&c=2016&d={1}&e={2}&f={3}&g=d&ignore=.csv")\
-          .format(ticker, today.day, today.month, today.year)
+           "s={0}&a={1}&b={2}&c={3}&d={4}&e={5}&f={6}&g=d&ignore=.csv")\
+          .format(ticker, cutoff.month-1, cutoff.day, cutoff.year,
+                  today.month-1, today.day, today.year)
     content = urllib2.urlopen(url).read()
     rows = reversed(content.split("\n")[1:-1])
     closing_prices = []
@@ -73,3 +79,15 @@ def parse_yahoo_finance_quote(data):
                 key_stats.get("lastSplitDate")["fmt"], _DATE_FORMAT)
         }
     return {"price": current_price, "latest_split": split_data}
+
+
+def calculate_health_factor(recent_data):
+    '''
+    Calculates averaged daily growth for different intervals
+    '''
+    data_length = len(recent_data - 1)
+    recent_diff = map(lambda x, y: x-y, recent_data[:-1], recent_data[1:])
+    avg_growth_rates = {}
+    for i in xrange(data_length):
+        avg_growth_rates[(data_length-i) + "d"] = sum(recent_diff[i:])/(data_length - i)
+    return avg_growth_rates
