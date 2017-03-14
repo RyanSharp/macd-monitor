@@ -7,12 +7,16 @@ from utils import decorators
 =======
 from utils.decorators import login_required
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 7444f1b... bad merge
 import httplib2
 import logging
 =======
 from config.logs import logging
 >>>>>>> 54bbbf2... fixing bugs.  data sync now runs
+=======
+from config.logs import logging
+>>>>>>> 062cec1... fixing bugs.  data sync now runs
 import json
 
 
