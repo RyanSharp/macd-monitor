@@ -51,7 +51,6 @@ def user_login():
 
 
 @app.route("/api/stock_tracker/new/<ticker>")
-@login_required()
 def start_tracking_ticker(ticker):
     rdict = {"success": False}
     try:
