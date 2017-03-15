@@ -1,6 +1,7 @@
 from models.classes import HoldingProfile
 from models.database import get_collection
 from utils.macd import get_quote_for_ticker, get_seed_data_for_ticker
+from utils.archived_update import get_or_create_archive
 from config.database import HOLDING_PROFILES_COLLECTION
 from utils.errors import EntityAlreadyExists, QuoteNotFound
 from utils.schedule import should_sync_run
@@ -53,7 +54,9 @@ def update_stock_profile(ticker):
     if quote is None or profile is None:
         logging.info("Missing quote or profile")
         return False
-    profile.update_profile(quote["price"], int(datetime.datetime.now().strftime("%Y%m%d")))
+    date_int = int(datetime.datetime.now().strftime("%Y%m%d"))
+    archived_update = get_or_create_archive(ticker, date_int)
+    profile.update_profile(quote["price"], date_int, archived_update)
     profile.commit()
     return True
 

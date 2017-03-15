@@ -1,0 +1,12 @@
+[Unit]
+Description=Instance hosting macd monitor service
+After=network.target
+
+[Service]
+User=appadmin
+Group=www-data
+WorkingDirectory=/home/appadmin/macd-monitor
+ExecStart=/usr/local/bin/gunicorn --workers 2 --bind unix:app.sock -m 007 wsgi:app
+
+[Install]
+WantedBy=multi-user.target

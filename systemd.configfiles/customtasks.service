@@ -1,0 +1,15 @@
+[Unit]
+Description=Celery tasks
+After=network.target
+
+[Service]
+Type=forking
+User=appadmin
+Group=www-data
+WorkingDirectory=/home/appadmin/macd-monitor
+ExecStart=/bin/sh -c '/usr/local/bin/celery multi start worker -A customtasks --loglevel=INFO --concurrency=1 --workdir=/home/appadmin/macd-monitor/ --logfile=/var/log/customtasks.log --pidfile=/var/run/celery/worker.pid'
+ExecStop=/bin/sh -c '/usr/local/bin/celery multi stopwait worker --pidfile=worker.pid'
+ExecReload=/bin/sh -c '/usr/local/bin/celery multi restart worker -A customtasks --loglevel=INFO --concurrency=1 --workdir=/home/appadmin/macd-monitor/ --logfile=/var/log/customtasks.log --pidfile=/var/run/celery/worker.pid'
+
+[Install]
+WantedBy=multi-user.target

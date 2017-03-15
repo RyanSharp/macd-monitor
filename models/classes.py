@@ -83,7 +83,7 @@ class HoldingProfile(BaseClass):
     def _get_collection(self):
         return self.collection
 
-    def update_profile(self, price, for_date):
+    def update_profile(self, price, for_date, archived_update):
         attribute = self.get_property("recent_data")
         recent_data = attribute.get_val()
         overwrite_latest = False
@@ -126,5 +126,13 @@ class HoldingProfile(BaseClass):
                 calculate_health_factor(
                     [x.get_property("macd_ema9").get_val() for x in
                      self.get_property("recent_data").get_val()[-11:]])
-        archived_update = ArchivedUpdate(update_data)
+        archived_update.get_property("price").apply_transaction("$set", value=price)
+        archived_update.get_property("ema26")\
+            .apply_transaction("$set", value=update_data.get("ema26"))
+        archived_update.get_property("ema12")\
+            .apply_transaction("$set", value=update_data.get("ema12"))
+        archived_update.get_property("macd_ema9")\
+            .apply_transaction("$set", value=update_data.get("macd_ema9"))
+        archived_update.get_property("health_factor")\
+            .apply_transaction("$set", value=update_data.get("health_factor"))
         archived_update.commit()
