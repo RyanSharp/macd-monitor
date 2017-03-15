@@ -85,9 +85,9 @@ def calculate_health_factor(recent_data):
     '''
     Calculates averaged daily growth for different intervals
     '''
-    data_length = len(recent_data - 1)
+    data_length = len(recent_data) - 1
     recent_diff = map(lambda x, y: x-y, recent_data[:-1], recent_data[1:])
     avg_growth_rates = {}
     for i in xrange(data_length):
-        avg_growth_rates[(data_length-i) + "d"] = sum(recent_diff[i:])/(data_length - i)
+        avg_growth_rates[str(data_length-i) + "d"] = sum(recent_diff[i:])/(data_length - i)
     return avg_growth_rates
