@@ -33,7 +33,8 @@ def create_stock_profile(ticker):
             historical_data = get_seed_data_for_ticker(ticker)
             profile = HoldingProfile(dict(ticker=ticker))
             for price in historical_data:
-                profile.update_profile(price[0], int(price[1].strftime("%Y%m%d")))
+                archived_update = get_or_create_archive(ticker, int(price[1].strftime("%Y%m%d")))
+                profile.update_profile(price[0], int(price[1].strftime("%Y%m%d")), archived_update)
             profile.commit()
             return profile
         else:

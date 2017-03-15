@@ -7,7 +7,7 @@ import json
 import urllib2
 
 
-_CLOSE_INDEX = 5
+_CLOSE_INDEX = 6
 _DATE_INDEX = 0
 _DATE_FORMAT = "%Y-%m-%d"
 

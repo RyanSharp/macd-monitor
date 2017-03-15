@@ -28,10 +28,10 @@ def create_superuser():
 
 @app.route("/api/login", methods=["GET", "POST"])
 def user_login():
-    if request.METHOD == "POST":
+    if request.method == "POST":
         rdict = {"success": False}
-        username = request.POST["username"]
-        password = request.POST["password"]
+        username = request.form["username"]
+        password = request.form["password"]
         account = get_account_by_username(username)
         if account.check_password(password):
             session = account.get_property("session")
