@@ -69,4 +69,4 @@ def list_stock_profiles():
     collection = get_collection(HOLDING_PROFILES_COLLECTION)
     profiles = collection.find({}, {"ticker": 1})
     for profile in profiles:
-        yield profile
+        yield HoldingProfile(profile)

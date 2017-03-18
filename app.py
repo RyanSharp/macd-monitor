@@ -1,5 +1,6 @@
 from flask import Flask, request, Response
 from utils.account import get_account_by_username, create_account
+from utils.archive import get_chronological_archive
 from utils.stock_profile import create_stock_profile, list_stock_profiles, get_stock_profile
 from utils.errors import EntityAlreadyExists, QuoteNotFound
 from utils.decorators import login_required
@@ -70,7 +71,7 @@ def start_tracking_ticker(ticker):
 def list_tracking_tickers():
     rdict = {"success": False}
     profiles = list_stock_profiles()
-    rdict["results"] = [profile for profile in profiles]
+    rdict["results"] = [profile.serialize_data() for profile in profiles]
     rdict["success"] = True
     return rdict
 
@@ -88,13 +89,25 @@ def simulate_ticker(ticker):
     return rdict
 
 
+@app.route("/api/stock_tracker/archive/<ticker>/<int:last_date>")
+@login_required()
+def retrive_historical(ticker, last_date):
+    rdict = {"success": False}
+    if int(last_date) == 0:
+        last_date = None
+    archive = get_chronological_archive(ticker, last_date=last_date)
+    rdict["results"] = [a.serialize_data() for a in archive]
+    rdict["success"] = True
+    return rdict
+
+
 @app.route("/api/stock_tracker/<ticker>")
 @login_required()
 def get_profile_by_ticker(ticker):
     rdict = {"success": False}
     profile = get_stock_profile(ticker)
     if profile is not None:
-        profile = profile.serialize()
+        profile = profile.serialize_data()
         rdict["success"] = True
         rdict["results"] = [profile]
     else:
