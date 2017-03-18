@@ -1,0 +1,4 @@
+Assets will only be purchased and held on to while signals are good.  No assumptions will be made about poor signals.
+
+Use linear regression to identify a general tend towards positive growth
+Latest values must stipulate highest growth in trend

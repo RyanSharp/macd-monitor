@@ -1,3 +1,9 @@
+'''
+    Author: Ryan Sharp
+    Date: 03/17/2017
+
+    Module declaring base functionality for classes and attributes.  Wraps mongo functionality
+'''
 from models.database import get_collection
 import datetime
 import abc

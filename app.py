@@ -3,6 +3,7 @@ from utils.account import get_account_by_username, create_account
 from utils.stock_profile import create_stock_profile, list_stock_profiles, get_stock_profile
 from utils.errors import EntityAlreadyExists, QuoteNotFound
 from utils.decorators import login_required
+from utils.simmulate import run_historical_analysis
 from config.logs import logging
 import json
 
@@ -51,6 +52,7 @@ def user_login():
 
 
 @app.route("/api/stock_tracker/new/<ticker>")
+@login_required()
 def start_tracking_ticker(ticker):
     rdict = {"success": False}
     try:
@@ -60,21 +62,34 @@ def start_tracking_ticker(ticker):
         rdict["msg"] = e.message
     except QuoteNotFound as e:
         rdict["msg"] = e.message
-    return json.dumps(rdict)
+    return rdict
 
 
 @app.route("/api/stock_tracker/list_tickers")
-#@login_required()
+@login_required()
 def list_tracking_tickers():
     rdict = {"success": False}
     profiles = list_stock_profiles()
     rdict["results"] = [profile for profile in profiles]
     rdict["success"] = True
-    return json.dumps(rdict)
+    return rdict
+
+
+@app.route("/api/stock_tracker/simulate/<ticker>")
+@login_required()
+def simulate_ticker(ticker):
+    rdict = {"success": False}
+    try:
+        rdict["results"] = run_historical_analysis(ticker)
+        rdict["success"] = True
+    except Exception as e:
+        logging.exception(e)
+        rdict["msg"] = "{0}".format(e.message)
+    return rdict
 
 
 @app.route("/api/stock_tracker/<ticker>")
-#@login_required()
+@login_required()
 def get_profile_by_ticker(ticker):
     rdict = {"success": False}
     profile = get_stock_profile(ticker)
@@ -84,7 +99,7 @@ def get_profile_by_ticker(ticker):
         rdict["results"] = [profile]
     else:
         rdict["msg"] = "Ticker not being tracked"
-    return json.dumps(rdict)
+    return rdict
 
 
 if __name__ == "__main__":

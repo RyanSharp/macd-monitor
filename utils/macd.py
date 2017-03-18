@@ -1,5 +1,8 @@
 '''
-Calculate MACD and EMAs
+    Author: Ryan Sharp
+    Date: 03/17/2017
+
+    Calculate MACD and EMAs
 '''
 from config.logs import logging
 import datetime
@@ -86,7 +89,7 @@ def calculate_health_factor(recent_data):
     Calculates averaged daily growth for different intervals
     '''
     data_length = len(recent_data) - 1
-    recent_diff = map(lambda x, y: x-y, recent_data[:-1], recent_data[1:])
+    recent_diff = map(lambda x, y: x-y, recent_data[1:], recent_data[:-1])
     avg_growth_rates = {}
     for i in xrange(data_length):
         avg_growth_rates[str(data_length-i) + "d"] = sum(recent_diff[i:])/(data_length - i)

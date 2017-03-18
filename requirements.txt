@@ -1,3 +1,6 @@
 httplib2
 pytz
 pymongo
+sklearn
+numpy
+scipy

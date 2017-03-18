@@ -1,7 +1,13 @@
+'''
+    Author: Ryan Sharp
+    Date: 03/17/2017
+
+    Classes (for mongo connector) to be used by application
+'''
+import hashlib
 from models.base import Attribute, BaseClass
 from utils.macd import calculate_ema, calculate_health_factor
 from config.database import ACCOUNT_COLLECTION, HOLDING_PROFILES_COLLECTION, ARCHIVED_UPDATES_COLLECTION
-import hashlib
 
 
 class Account(BaseClass):
@@ -84,6 +90,7 @@ class HoldingProfile(BaseClass):
         return self.collection
 
     def update_profile(self, price, for_date, archived_update):
+        data_length = 5
         attribute = self.get_property("recent_data")
         recent_data = attribute.get_val()
         overwrite_latest = False
@@ -124,8 +131,9 @@ class HoldingProfile(BaseClass):
         if self.get_property("total_data").get_val() > 110:
             update_data["health_factor"] =\
                 calculate_health_factor(
-                    [x.get_property("macd_ema9").get_val() for x in
-                     self.get_property("recent_data").get_val()[-11:]])
+                    [(x.get_property("ema12").get_val() - x.get_property("ema26").get_val() -
+                      x.get_property("macd_ema9").get_val())
+                     for x in self.get_property("recent_data").get_val()[-(1 + data_length):]])
         archived_update.get_property("price").apply_transaction("$set", value=price)
         archived_update.get_property("ema26")\
             .apply_transaction("$set", value=update_data.get("ema26"))
