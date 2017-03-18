@@ -71,7 +71,7 @@ def start_tracking_ticker(ticker):
 def list_tracking_tickers():
     rdict = {"success": False}
     profiles = list_stock_profiles()
-    rdict["results"] = [profile.serialize_data() for profile in profiles]
+    rdict["results"] = [profile.serialize_for_json() for profile in profiles]
     rdict["success"] = True
     return rdict
 
@@ -96,7 +96,7 @@ def retrive_historical(ticker, last_date):
     if int(last_date) == 0:
         last_date = None
     archive = get_chronological_archive(ticker, last_date=last_date)
-    rdict["results"] = [a.serialize_data() for a in archive]
+    rdict["results"] = [a.serialize_for_json() for a in archive]
     rdict["success"] = True
     return rdict
 
@@ -107,7 +107,7 @@ def get_profile_by_ticker(ticker):
     rdict = {"success": False}
     profile = get_stock_profile(ticker)
     if profile is not None:
-        profile = profile.serialize_data()
+        profile = profile.serialize_for_json()
         rdict["success"] = True
         rdict["results"] = [profile]
     else:

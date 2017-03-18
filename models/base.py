@@ -108,6 +108,11 @@ class BaseClass(object):
         rdict["modified"] = datetime.datetime.now()
         return rdict
 
+    def serialize_for_json(self):
+        data = self.serialize_data()
+        data["created"] = data["created"].strftime("%c")
+        data["modified"] = data["modified"].strftime("%c")
+
     def get_named_list(self):
         if not hasattr(self, "named_list"):
             self.named_list = [attribute.get_name() for attribute in self._get_properties()]
