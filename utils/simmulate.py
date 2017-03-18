@@ -19,6 +19,7 @@ def run_historical_analysis(ticker):
     prev_ema_diff = None
     current_action = []
     actions = []
+    index = -2
     while True:
         count = 0
         for item in get_chronological_archive(ticker, last_date=last_date):
@@ -37,10 +38,12 @@ def run_historical_analysis(ticker):
                 if check_positive_momentum(lin_regr, health_factor, ema_record):
                     if current_action:
                         continue
+                    index = count if count < 100 else -1
                     price = item.get_property("price").get_val()
                     current_action = ["buy", last_date, price, None]
                     actions.append(current_action)
-                elif len(current_action) > 0:
+                elif len(current_action) > 0 and count > (index + 1):
+                    index = -2
                     price = item.get_property("price").get_val()
                     actions.append(["sell", last_date, price, price / current_action[2]])
                     current_action = []
@@ -57,7 +60,7 @@ def check_positive_momentum(linear_regression_output, health_factor, ema_record)
     '''
     vals = [health_factor[str(x + 1) + "d"] for x in xrange(len(health_factor.keys()))]
     return linear_regression_output[0] > linear_regression_output[-1] and\
-        vals[0] > max(vals[1:]) and ema_record[1] > 0 and ema_record[1]/ema_record[0] > 1.5
+        vals[0] > max(vals[1:]) and ema_record[1] > 0 and ema_record[1]/ema_record[0] > 2
 
 
 def reload_data():
