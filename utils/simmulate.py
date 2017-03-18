@@ -61,7 +61,7 @@ def check_positive_momentum(linear_regression_output, health_factor, ema_record)
     vals = [health_factor[str(x + 1) + "d"] for x in xrange(len(health_factor.keys()))]
     # return linear_regression_output[0] > linear_regression_output[-1] and\
     #     vals[0] > max(vals[1:]) and ema_record[1] > 0 and ema_record[1]/ema_record[0] > 2
-    return ema_record[1] > 0 and ema_record[1]/ema_record[0] > 2
+    return ema_record[1] > 0 and ema_record[1] / ema_record[0] > 2
 
 
 def reload_data():
