@@ -18,3 +18,14 @@ def stock_health_linear_regression(health_factors):
     regr.fit(x_vals, y_vals)
     shaped_y_vals = regr.predict(x_vals)
     return shaped_y_vals
+
+
+def linear_regression_results(x_vals, y_vals):
+    '''
+    Creates linear model given input x and y value arrays
+    returns shaped y values
+    '''
+    regr = linear_model.LinearRegression()
+    regr.fit(x_vals, y_vals)
+    shaped_y_vals = regr.predict(x_vals)
+    return shaped_y_vals

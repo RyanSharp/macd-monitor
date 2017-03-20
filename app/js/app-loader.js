@@ -6,16 +6,21 @@ CORE_SCRIPTS = [
 
 APP_SCRIPTS = [
     "/api.js",
+    "/calculations.js",
+    "/models/archive.js",
 ];
 
 COMPONENT_SCRIPTS = [
+    "/react/nav.js",
     "/react/stock-profile.js",
-]
+];
 
-function loadSource() {
+function loadSource(callback) {
     addScripts(CORE_SCRIPTS).then(function() {
         addScripts(API_SCRIPTS).then(function() {
-            addScripts(COMPONENT_SCRIPTS);
+            addScripts(COMPONENT_SCRIPTS).then(function() {
+                callback ? callback() : null;
+            });;
         });
     });
 }
@@ -38,4 +43,9 @@ function addScripts(scripts) {
         });
         Promise.all(promises).then(resolve);
     });
+}
+
+function renderApp(node) {
+    node = typeof(node) === "string" ? document.getElementById(node) : node;
+    ReactDOM.render(React.createElement(Nav, {}), node);
 }
