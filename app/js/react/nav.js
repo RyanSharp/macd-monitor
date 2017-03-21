@@ -16,7 +16,7 @@ class Nav extends React.Component {
             query = {};
             hash[1].split("&").map(function(pairs) {
                 pairs = pairs.split("=");
-                query[decodeURIComponent(paris[0])] = decodeURIComponent(paris[1]);
+                query[decodeURIComponent(pairs[0])] = decodeURIComponent(pairs[1]);
             });
             this.setState({
                 path: hash[0].split("/"),
@@ -47,7 +47,7 @@ class ListView extends React.Component {
     render() {
         return React.createElement("div", {className: "list-view"},
             this.props.items.map(function(item) {
-                return React.createElement(ListItem, {title: item});
+                return React.createElement(ListItem, {ticker: item.ticker});
             })
         );
     }
@@ -58,7 +58,22 @@ class ListItem extends React.Component {
     constructor(props) {
         super(props);
     }
+    openModal() {
+        var aTag = document.createElement("a");
+        aTag.setAttribute("href", window.location.href);
+        hash = a.hash.split("?");
+        query = {};
+        hash[1].split("&").map(function(pairs) {
+            pairs = pairs.split("=");
+            query[decodeURIComponent(paris[0])] = decodeURIComponent(pairs[1]);
+        });
+        query.ticker = this.props.ticker;
+        window.location.href = "#/" + hash + "?" + Object.keys(query).map(function(param) {return encodeURIComponent(param) + "=" + encodeURIComponent(query[param])}).join("&");
+    }
     render() {
-        return React.createElement("div", {className: "list-item"}, this.props.title);
+        return React.createElement("div", {
+            className: "list-item",
+            onClick: this.openModal(),
+        }, this.props.ticker);
     }
 }
