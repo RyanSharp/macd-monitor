@@ -26,6 +26,7 @@ function loadSource(callback) {
 }
 
 function addScripts(scripts) {
+    var head = document.getElementsByTagName("head")[0];
     return new Promise(function(resolve, reject) {
         var promises = Object.keys(scripts).map(function(api) {
             return new Promise(function(resolve, reject) {
