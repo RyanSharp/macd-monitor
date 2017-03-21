@@ -27,7 +27,7 @@ class Nav extends React.Component {
     }
     appContent() {
         var appContent = [];
-        if (this.state.path[0] === "list") {
+        if (this.state && this.state.path && this.state.path[0] === "list") {
             appContent.push(React.createElement(ListView, {items: this.state.items}));
             if (this.state.params.ticker) {
                 appContent.push(React.createElement(StockProfile, {symbol: this.state.params.ticker}));
