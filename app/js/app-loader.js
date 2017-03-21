@@ -17,7 +17,7 @@ COMPONENT_SCRIPTS = [
 
 function loadSource(callback) {
     addScripts(CORE_SCRIPTS).then(function() {
-        addScripts(API_SCRIPTS).then(function() {
+        addScripts(APP_SCRIPTS).then(function() {
             addScripts(COMPONENT_SCRIPTS).then(function() {
                 callback ? callback() : null;
             });;
