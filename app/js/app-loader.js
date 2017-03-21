@@ -5,14 +5,14 @@ CORE_SCRIPTS = [
 ];
 
 APP_SCRIPTS = [
-    "/api.js",
-    "/calculations.js",
-    "/models/archive.js",
+    "/app/api.js",
+    "/app/calculations.js",
+    "/app/models/archive.js",
 ];
 
 COMPONENT_SCRIPTS = [
-    "/react/nav.js",
-    "/react/stock-profile.js",
+    "/app/react/nav.js",
+    "/app/react/stock-profile.js",
 ];
 
 function loadSource(callback) {
