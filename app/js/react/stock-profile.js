@@ -3,11 +3,13 @@ class StockProfile extends React.Component {
         super(props);
     }
     drawPriceChart() {
-        var context;
+        var context, data;
         context = this.refs.priceChart.getContext("2d");
+        data = this.state.archive.map(function(pt, i) {return {x: pt.date, y: pt.price}});
+        console.log(data);
         this.priceChart = new Chart(context, {
             type: "line",
-            data: this.state.archive.map(function(pt) {return pt.price}),
+            data: data,
         });
     }
     drawMacdChart() {

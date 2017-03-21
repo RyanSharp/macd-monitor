@@ -48,7 +48,10 @@ function getFullSymbolArchive(ticker) {
     return new Promise(function(resolve, reject) {
         function nextArchive() {
             getArchive(ticker, last_date).then(function(results) {
-                if (results.length === 0) resolve(archive);
+                if (results.length === 0) {
+                    resolve(archive);
+                    return;
+                }
                 results.map(function(result) {
                     archive.push(result);
                     last_date = result.date;
