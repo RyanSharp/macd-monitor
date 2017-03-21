@@ -5,19 +5,19 @@ CORE_SCRIPTS = [
 ];
 
 APP_SCRIPTS = [
-    "/app/api.js",
-    "/app/calculations.js",
-    "/app/models/archive.js",
+    "/app/js/api.js",
+    "/app/js/calculations.js",
+    "/app/js/models/archive.js",
 ];
 
 COMPONENT_SCRIPTS = [
-    "/app/react/nav.js",
-    "/app/react/stock-profile.js",
+    "/app/js/react/nav.js",
+    "/app/js/react/stock-profile.js",
 ];
 
 function loadSource(callback) {
     addScripts(CORE_SCRIPTS).then(function() {
-        addScripts(API_SCRIPTS).then(function() {
+        addScripts(APP_SCRIPTS).then(function() {
             addScripts(COMPONENT_SCRIPTS).then(function() {
                 callback ? callback() : null;
             });;

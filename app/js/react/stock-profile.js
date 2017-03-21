@@ -11,7 +11,7 @@ class StockProfile extends React.Component {
         });
     }
     drawMacdChart() {
-        var context.
+        var context;
         context = this.refs.macdChart.getContext("2d");
         this.macdChart = new Chart(context, {
             type: "bar",
