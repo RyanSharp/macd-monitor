@@ -6,6 +6,7 @@ CORE_SCRIPTS = [
 
 APP_SCRIPTS = [
     "/app/js/api.js",
+    "/app/js/utils.js",
     "/app/js/calculations.js",
     "/app/js/models/archive.js",
 ];

@@ -36,16 +36,37 @@ class Archive {
 
 class OwnCondition {
     constructor(options) {
-        if (!options.duration || !options.calculation || !(!options.field && !options.function) || !options.trendRatio) {
+        if (!options.duration || !options.calculation || !options.trendRatio) {
             throw "Invalid Own Condition";
         }
         this.duration = options.duration;
         this.calculation = options.calculation;
-        this.field = options.field;
-        this.function = options.function;
         this.trendRatio = options.trendRatio;
     }
     testCondition(simulationData) {
-        
+        if (this.calculation === "macdLinearRegression") {
+            return this.macdLinearRegressionAnalysis(simulationData);
+        }
+    }
+    macdLinearRegressionAnalysis(simulationData) {
+        var macdVals, xVals = [], diff = 0, currRatio = null;
+        macdVals = simulationData.map(function(pt, i) {
+            xVals.push(Number(i));
+            return pt.ema12 - pt.ema26 - pt.macd_ema9
+        });
+        while (xVals.length - diff > 2) {
+            const curr = calculateLeastSquaresLinearRegression(xVals.slice(0, xVals.length - diff), macdVals.slice(diff));
+            const newRatio = (curr[curr.length-1] - curr[0]) / curr.length;
+            if (currRatio === null) {
+                currRatio = newRatio
+            } else {
+                if (newRatio - currRatio < this.trendRatio) {
+                    return false;
+                }
+                currRatio = newRatio;
+            }
+            diff++;
+        }
+        return true;
     }
 }

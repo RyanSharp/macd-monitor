@@ -1,10 +1,16 @@
 from celery.schedules import crontab
 
 
-BROKER_URL = "amqp://guest:guest@localhost:5672//"
+# BROKER_URL = "amqp://guest:guest@localhost:5672//"
+BROKER_TRANSPORT = "redis"
+
+BROKER_HOST = "localhost"
+BROKER_PORT = 6379
+BROKER_VHOST = "0"
 CELERY_IMPORTS = ["utils.tasks"]
  
-CELERY_RESULT_BACKEND = "amqp"
+# CELERY_RESULT_BACKEND = "amqp"
+CELERY_RESULT_BACKEND = "redis"
 CELERY_RESULT_PERSISTENT = True
 CELERY_TASK_RESULT_EXPIRES = None
  

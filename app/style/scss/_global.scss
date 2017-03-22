@@ -1,0 +1,71 @@
+$white:         #fafafa;
+$regular:       #263238;
+$regular-light: #455A64;
+
+html {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 10px;
+    color: $regular;
+}
+
+.list-item {
+    font-size: 2.2em;
+    height: 50px;
+    line-height: 50px;
+    box-sizing: border-box;
+    padding: 0 20px;
+    text-align: center;
+    &:hover {
+        color: $regular-light;
+        cursor: pointer;
+    }
+}
+
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-container {
+    width: 90%;
+    height: 90%;
+    background-color: $white;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%)translateY(-50%);
+}
+
+.chart-container {
+    height: 600px;
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.stock-profile-chart {
+    height: 300px;
+    width: 5000px;
+}
+
+.profile-header {
+    height: 50px;
+    width: 100%;
+    >.title {
+        font-size: 2em;
+        text-align: center;
+        line-height: 50px;
+    }
+    >.header-close {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        &:hover {
+            color: $regular-light;
+            cursor: pointer;
+        }
+    }
+}
