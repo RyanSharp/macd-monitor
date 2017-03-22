@@ -20,7 +20,8 @@ class StockProfile extends React.Component {
                     display: false
                 },
                 scales: {
-                    xAxes: [{display: false}]
+                    xAxes: [{display: false}],
+                    yAxes: [{afterFit: function(scaleInstance) {scaleInstance.width = 100}}]
                 }
             }
         });
@@ -43,7 +44,8 @@ class StockProfile extends React.Component {
                     display: false
                 },
                 scales: {
-                    xAxes: [{display: false}]
+                    xAxes: [{display: false}],
+                    yAxes: [{afterFit: function(scaleInstance) {scaleInstance.width = 100}}]
                 }
             }
         });
