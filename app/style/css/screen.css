@@ -75,21 +75,6 @@ html {
 }
 
 /* line 11, ../scss/_global.scss */
-.list-item {
-  font-size: 2.2em;
-  height: 50px;
-  line-height: 50px;
-  box-sizing: border-box;
-  padding: 0 20px;
-  text-align: center;
-}
-/* line 18, ../scss/_global.scss */
-.list-item:hover {
-  color: #455A64;
-  cursor: pointer;
-}
-
-/* line 24, ../scss/_global.scss */
 .modal-backdrop {
   position: absolute;
   top: 0;
@@ -99,7 +84,7 @@ html {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
-/* line 33, ../scss/_global.scss */
+/* line 20, ../scss/_global.scss */
 .modal-container {
   width: 90%;
   height: 90%;
@@ -110,37 +95,37 @@ html {
   transform: translateX(-50%) translateY(-50%);
 }
 
-/* line 43, ../scss/_global.scss */
+/* line 30, ../scss/_global.scss */
 .chart-container {
   height: 600px;
   width: 100%;
   overflow-x: scroll;
 }
 
-/* line 49, ../scss/_global.scss */
+/* line 36, ../scss/_global.scss */
 .stock-profile-chart {
   height: 300px;
   width: 5000px;
 }
 
-/* line 54, ../scss/_global.scss */
+/* line 41, ../scss/_global.scss */
 .profile-header {
   height: 50px;
   width: 100%;
 }
-/* line 57, ../scss/_global.scss */
+/* line 44, ../scss/_global.scss */
 .profile-header > .title {
   font-size: 2em;
   text-align: center;
   line-height: 50px;
 }
-/* line 62, ../scss/_global.scss */
+/* line 49, ../scss/_global.scss */
 .profile-header > .header-close {
   position: absolute;
   top: 5px;
   right: 5px;
 }
-/* line 66, ../scss/_global.scss */
+/* line 53, ../scss/_global.scss */
 .profile-header > .header-close:hover {
   color: #455A64;
   cursor: pointer;

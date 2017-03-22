@@ -15,7 +15,6 @@ class Nav extends React.Component {
          * App state is handled on this react element.
          */
         this.handleHashChange();
-        console.log(window.location.href);
         window.onhashchange = this.handleHashChange.bind(this);
         getSymbolsList().then(function(results) {this.setState({items: results})}.bind(this));
     }

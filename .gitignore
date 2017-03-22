@@ -1,3 +1,5 @@
 *.pyc
 lib/
 celerybeat-schedule
+app/style/.sass-cache
+app/style/css
