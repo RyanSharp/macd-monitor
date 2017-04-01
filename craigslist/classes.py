@@ -1,4 +1,5 @@
 from models.base import Attribute, BaseClass
+from config.database import CRAIGSLIST_COLLECTION
 
 
 class CraigslistRecord(BaseClass):
@@ -9,7 +10,7 @@ class CraigslistRecord(BaseClass):
             Attribute("article_content", [str, unicode], required=True, val=data.get("article_content")),
             Attribute("found", [bool], required=True, val=data.get("found", False)),
         ]
-        self.collection = "CraigslistRecords"
+        self.collection = CRAIGSLIST_COLLECTION
 
     def _get_properties(self):
         return self.properties
