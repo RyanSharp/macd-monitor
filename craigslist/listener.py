@@ -1,3 +1,4 @@
+from celery import task
 from bs4 import BeautifulSoup
 from craigslist.classes import CraigslistRecord
 from models.database import get_collection
@@ -44,6 +45,12 @@ def send_email(recipients, message):
     server.login(USERNAME, PASSWORD)
     server.sendmail(USERNAME, recipients, message)
     server.close()
+
+
+@task()
+def run_query_task():
+    for query in craigslist_queries:
+        run_query(query)
 
 
 def run_query(query):
