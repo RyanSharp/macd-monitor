@@ -70,3 +70,19 @@ def list_stock_profiles():
     profiles = collection.find({}, {"ticker": 1})
     for profile in profiles:
         yield HoldingProfile(profile)
+
+
+def run_trivial_analysis(ticker):
+    profile = get_stock_profile(ticker)
+    if profile is not None:
+        historical_data = profile.get_property("recent_data").get_val()[-3:]
+        macd_diff_line = [(x.get_property("ema12").get_val() -
+                           x.get_property("ema26").get_val() -
+                           x.get_property("macd_ema9").get_val())
+                          for x in historical_data]
+        diff_1 = (macd_diff_line[1] - macd_diff_line[0])/macd_diff_line[0]
+        diff_2 = (macd_diff_line[2] - macd_diff_line[1])/macd_diff_line[1]
+        if diff_1 < 0.08 and diff_1 > -0.1 and diff_2 > 0.11:
+            # Trivial analysis indicates further analysis
+            return {"data": macd_diff_line, "diff_1": diff_1, "diff_2": diff_2}
+    return False

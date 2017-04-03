@@ -3,3 +3,4 @@ lib/
 celerybeat-schedule
 app/style/.sass-cache
 app/style/css
+config/app_config.py

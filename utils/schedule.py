@@ -36,3 +36,18 @@ def should_sync_run():
     if now.strftime(date_format) in _SKIP_DATES:
         return False
     return True
+
+
+def should_analysis_run():
+    '''
+    Checks if markets are closed (but were open earlier that day)
+    '''
+    now = get_us_east_time()
+    if now.weekday() in [5, 6]:
+        return False
+    if now.hour > 18 or now.hour < 19:
+        return False
+    date_format = "%Y-%m-%d"
+    if now.strftime(date_format) in _SKIP_DATES:
+        return False
+    return True

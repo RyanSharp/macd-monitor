@@ -35,10 +35,22 @@ CELERY_ROUTES = {
         "queue": "stock",
         "routing_key": "stock.system_trigger"
     },
+    "utils.tasks.run_eod_analysis": {
+        "queue": "stock",
+        "routing_key": "stock.eod_analysis"
+    },
+    "utils.tasks.queue_matrix_eod_analysis": {
+        "queue": "stock",
+        "routing_key": "stock.eod_analysis_trigger"
+    }
 }
 CELERYBEAT_SCHEDULE = {
     "stock-matrix-update": {
         "task": "utils.tasks.queue_stock_matrix_update",
         "schedule": crontab(minute="*/10")
+    },
+    "matrix-eod-analysis": {
+        "task": "utils.tasks.queue_matrix_eod_analysis",
+        "schedule": crontab(minute="10", hour="*")
     }
 }
