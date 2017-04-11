@@ -76,7 +76,7 @@ html {
 
 /* line 11, ../scss/_global.scss */
 .modal-backdrop {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
@@ -129,4 +129,18 @@ html {
 .profile-header > .header-close:hover {
   color: #455A64;
   cursor: pointer;
+}
+
+/* line 60, ../scss/_global.scss */
+.list-item {
+  font-size: 20px;
+  line-height: 50px;
+  text-align: center;
+  width: 200px;
+  float: left;
+}
+/* line 66, ../scss/_global.scss */
+.list-item:hover {
+  cursor: pointer;
+  color: #455A64;
 }

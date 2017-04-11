@@ -17,6 +17,11 @@ class Nav extends React.Component {
         this.handleHashChange();
         window.onhashchange = this.handleHashChange.bind(this);
         getSymbolsList().then(function(results) {this.setState({items: results})}.bind(this));
+        var urlInfo = parseHashAndQuery();
+        if (urlInfo.path.length === 0 || urlInfo.path[0] === "") {
+            urlInfo.path = ["list"];
+            window.location.href = generateUrl(urlInfo.path, urlInfo.params);
+        }
     }
     appContent() {
         var appContent = [];

@@ -51,6 +51,6 @@ CELERYBEAT_SCHEDULE = {
     },
     "matrix-eod-analysis": {
         "task": "utils.tasks.queue_matrix_eod_analysis",
-        "schedule": crontab(minute="10", hour="*")
+        "schedule": crontab(minute=10, hour="*")
     }
 }
